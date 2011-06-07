@@ -1,0 +1,8 @@
+PG110607A:
+
+	Initial archive. I am still not sure whether I will spend any time on
+	this, but it doesn't hurt to start.
+
+	The initial archive, to the best of my memory, is the original version
+	2.2 + a simple modification in ex.c (look for PGPGPG) disabling the
+	security check inhibiting split.

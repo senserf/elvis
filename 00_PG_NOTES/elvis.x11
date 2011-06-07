@@ -1,0 +1,39 @@
+" DEFAULT CONFIGURATION FOR THE "X11" USER INTERFACE
+color! statusbar like toolbar
+color! status like tool
+color! scrollbar like toolbar
+color! scroll like tool
+gui Quit:q
+gui Quit?!modified
+gui Quit"Close this window, and maybe exit elvis
+gui Edit;"File to load:" (file) f = filename
+gui Edit:e (f)
+gui Edit"Open a file in this window
+gui Split;"File to load:" (file) f = filename
+gui Split:sp (f)
+gui Split"Open a file in a new window
+gui Save:w
+gui Save?modified && edited && !readonly
+gui Save"Write this buffer out to its file
+gui Save as;"File to write:"(file)f=dirfile(filename);="The default is in the current directory!"
+gui Save as:w (f)
+gui Save as"Write this buffer out to a different file
+gui Reload:e!%
+gui Reload"Re-read this file, discarding all changes
+gui Reload;="Are you sure you want to do this?"
+gui gap
+gui Normal:no
+gui Normal=display=="normal"
+gui Normal"Select the normal display mode
+gui Hex:dis hex
+gui Hex=display=="hex"
+gui Hex"Select the hex display mode
+gui Syntax:dis syntax
+gui Syntax=display<<6=="syntax"
+gui Syntax"Select the syntax display mode (syntax-coloring)
+gui Other:eval dis (bufdisplay)
+gui Other=display!="normal" && display!="hex" && display<<6!="syntax"
+gui Other?bufdisplay!="normal" && bufdisplay!="hex" && bufdisplay<<6!="syntax"
+gui Other"Select the appropriate text-formatting display mode
+gui Help:help
+gui Help"Create a new window, showing elvis' manual

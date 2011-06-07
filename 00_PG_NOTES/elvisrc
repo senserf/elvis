@@ -1,0 +1,33 @@
+color x11.normal green on black
+color x11.bottom like normal
+color x11.selection on tan
+color x11.hlsearch boxed
+color x11.cursor red on yellow
+color x11.tool black on gray75
+color x11.toolbar white on gray40
+color x11.scroll like tool
+color x11.scrollbar like toolbar
+color x11.status like tool
+color x11.statusbar like toolbar
+color x11.guide white
+color x11.comment italic dark green or light green
+color x11.string tan4 or tan1
+color x11.keyword bold
+color x11.function Red4 or pink
+color x11.number Blue4 or light blue
+color x11.prep bold Blue4 or light blue
+color x11.prepquote like string
+color x11.other like keyword
+color x11.variable Gray15 or palegoldenrod
+color x11.fixed gray35 or gray80
+color x11.libt like keyword italic
+color x11.argument like keyword green or dark green
+color x11.hexheading gray70
+color x11.linenumber gray
+color x11.link like formatted underlined blue or light blue
+color x11.spell on pink
+color termcap.normal green on black
+:set controlfont="fixed"
+:set font="fixed"
+:set font="7x14"
+:set security=n

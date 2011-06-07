@@ -1,0 +1,30 @@
+rm -f doc/*.bak
+[ -d /usr/bin ] || mkdir /usr/bin
+cp elvis ref elvtags elvfmt /usr/bin
+(cd /usr/bin; chmod 0755 elvis ref elvtags elvfmt)
+rm -rf /usr/share/elvis/
+mkdir -p /usr/share/elvis/
+cp data/*.* /usr/share/elvis/
+for i in icons scripts stubs themes; do mkdir /usr/share/elvis//$i; cp data/$i/* /usr/share/elvis//$i/; done
+rm -rf /usr/share/elvis/doc/
+mkdir -p /usr/share/elvis/doc/
+cp doc/*.html /usr/share/elvis/doc/
+cp doc/*.man /usr/share/elvis/doc/
+cp doc/*.txt /usr/share/elvis/doc/
+cp doc/elvistrs.msg /usr/share/elvis/doc/
+cp doc/printdoc.bat /usr/share/elvis/doc/
+find /usr/share/elvis/ -type f -exec chmod 0644 {} \;
+find /usr/share/elvis/doc/ -type f -exec chmod 0644 {} \;
+(cd doc; for i in *.html; do sed 's/<title>Elvis[^ ]*/<title>Elvis-2.2_0/;s/ELVIS[^ <]*</ELVIS-2.2_0</' $i >/usr/share/elvis/doc//$i; done)
+(cd doc; for i in *.man; do sed 's/Elvis 2\.[0-9x][0-9a-z-]*/Elvis 2.2_0/' $i >/usr/share/elvis/doc//$i; done)
+(cd /usr/share/elvis/; /usr/bin/elvtags -gitv stubs/*.c || ctags stubs/*.c)
+chmod 0755 /usr/share/elvis//*/. /usr/share/elvis/ /usr/share/elvis/doc/
+sh instman.sh -p/usr elvis ref elvtags elvfmt
+::: I CAN'T AUTOMATICALLY INSTALL THE MAN PAGES ON THIS SYSTEM
+::: BECAUSE I DON'T KNOW WHERE TO PUT THEM!  You can either
+::: try editing the "instman.sh" script & rerunning it, or
+::: simply install them yourself by hand.
+[ -d /etc/elvis ] || mkdir /etc/elvis
+chmod 0755 /etc/elvis/
+chmod 0644 /etc/elvis/README
+chmod 0644 /usr/share/elvis//README
