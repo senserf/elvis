@@ -387,7 +387,7 @@ static void parsespec(dia)
 			  case 'o': ft = FT_ONEOF, limit = scan;	break;
 			  case 'n': ft = FT_NUMBER, limit = scan;	break;
 			  case 's': ft = FT_STRING;			break;
-			  case 'f': ft = FT_FILE;			break;
+			  case 'f': ft = FT_ZFILE;			break;
 			  case 'l': ft = FT_LOCKED;			break;
 			}
 
@@ -556,7 +556,7 @@ void x_dl_add(xw, name, desc, excmd, spec)
 			break;
 
 		  case FT_STRING:
-		  case FT_FILE:
+		  case FT_ZFILE:
 			button = addbutton(dia, "<", 'l', ELVCTRL('L'));
 			button->y = dia->y0 + dia->rowh * i;
 			button->x = dia->x0 + 3;
@@ -1111,7 +1111,7 @@ static void keystroke(dia, key)
 			newvalue = keystring(dia, key);
 			break;
 
-		  case FT_FILE:
+		  case FT_ZFILE:
 #ifdef FEATURE_COMPLETE
 			if (key == '\t')
 			{
@@ -1179,7 +1179,7 @@ static void exposerow(dia, row, fromscratch)
 	switch (dia->field[row].ft)
 	{
 	  case FT_STRING:
-	  case FT_FILE:
+	  case FT_ZFILE:
 	  case FT_NUMBER:
 	  case FT_LOCKED:
 		drawtext(dia, row);
@@ -1207,7 +1207,7 @@ static void exposerow(dia, row, fromscratch)
 			break;
 
 		  case FT_STRING:
-		  case FT_FILE:
+		  case FT_ZFILE:
 			if (button->shape == 'l')
 				if (row == dia->current
 				    ? dia->shift > 0

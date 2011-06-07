@@ -43,7 +43,7 @@
 #define	FEATURE_G	/* most of the visual 'g' commands */
 #define	FEATURE_HLOBJECT /* the hlobject and hllayers options */
 #define	FEATURE_HLSEARCH  /* the hlsearch option */
-#undef	FEATURE_IMAGE	/* background images in x11 */
+#define	FEATURE_IMAGE	/* background images in x11 */
 #define	FEATURE_INCSEARCH /* the incsearch option */
 #define	FEATURE_LISTCHARS /* the "listchars" option */
 #define	FEATURE_LITRE	/* accelerate searches for literal strings */
@@ -65,7 +65,7 @@
 #define	FEATURE_TAGS	/* :tag command -- undef'ing will break ref & ctags */
 #define	FEATURE_TEXTOBJ	/* text objects */
 #define	FEATURE_V	/* the v/V/^V marking commands */
-#undef	FEATURE_XFT	/* support antialiased fonts in "x11" */
+#define	FEATURE_XFT	/* support antialiased fonts in "x11" */
 
 /* The FEATURE_CALC option, above, controls whether the calculator and all of
  * the features that depend on it should be included in elvis.  You almost
@@ -100,22 +100,22 @@
 #undef	NEED_ASSERT	/* defines a custom assert() macro */
 #undef	NEED_TGETENT	/* causes tinytcap.c to be used instead of library */
 #undef	NEED_WINSIZE	/* includes <ptem.h> -- required by SCO */
-#define	NEED_SPEED_T	/* includes <termcap.h> -- common on POSIX systems */
+#undef	NEED_SPEED_T	/* includes <termcap.h> -- common on POSIX systems */
 #undef	NEED_STRDUP	/* uses a custom version of strdup() */
 #undef	NEED_MEMMOVE	/* uses a custom version of memmove() */
 #undef	NEED_OSPEED	/* causes guitcap.c to supply an ospeed variable */
 #define	NEED_BC		/* causes guitcap.c to supply a BC variable */
-#undef	NEED_SETPGID	/* use setpgrp() instead of setpgid() */
+#define	NEED_SETPGID	/* use setpgrp() instead of setpgid() */
 #undef	NEED_FREOPEN	/* use close()/dup()instead of freopen() */
 #define	NEED_CTYPE	/* uses a custom <ctype.h>, driven by :digraph */
 #define	NEED_WAIT_H	/* must include <sys/wait.h> */
-#undef	NEED_SELECT_H	/* must include <sys/select.h> */
+#define	NEED_SELECT_H	/* must include <sys/select.h> */
 #define	NEED_IOCTL_H	/* must include <sys/ioctl.h> */
 #define	NEED_XOS_H	/* must include <X11/Xos.h> */
 #define	NEED_IN_H	/* must include <netinet/in.h> */
 #define	NEED_SOCKET_H	/* must include <sys/socket.h> */
 #undef	NEED_XRMCOMBINEFILEDATABASE	/* X11R4 needs this */
-#undef	NEED_INET_ATON	/* SunOS, Solaris, and Cygwin need this */
+#define	NEED_INET_ATON	/* SunOS, Solaris, and Cygwin need this */
 
 /* The following control debugging features.  NDEBUG slows elvis down a lot,
  * and the others tend to make it output some confusing messages, so these
@@ -136,5 +136,5 @@
 /* The following macros, and their values, are mostly used to determine the
  * default values of some options.
  */
-#define	OSLPOUT	"!lp -s"	/* default value of lpout option */
+#define	OSLPOUT	"!lpr"	/* default value of lpout option */
 #define OSLIBPATH "~/.elvis:/etc/elvis:/usr/share/elvis/:/usr/share/elvis/doc/"	/* default elvispath */

@@ -1,4 +1,4 @@
-# Makefile - configured for linux
+# Makefile - configured for generic Unix
 # $Id: Makefile.in,v 2.121 2003/10/21 02:31:00 steve Exp $
 #
 # Makefile.in should not be modified!  The "configure" script reads Makefile.in
@@ -14,14 +14,14 @@
 # If you're compiling with X-windows support, you may need to add a
 # "-I/usr/X11/include" flag or something similar.
 #CC=gcc -g -Wall -pedantic -Wtraditional -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -I/usr/include/freetype2 -I/usr/X11R6/include
-CC=gcc -O2
+CC=gcc -O2 -I/usr/include/freetype2
 
 ################################################################################
 # This macro gives any arguments which will be needed during linking.
 # Mostly, this means "-Llibdir" and "-llib" flags.  If you're compiling with
 # X-windows support, then you'll have to add a "-lX11" and maybe a
 # "-L/usr/X11/lib" flag or something similar.
-LIBS= -lX11 -ltermcap  -lresolv
+LIBS= -lXft -lXpm -lX11 -lcurses  -lresolv
 
 ################################################################################
 # This should be "unix" for all UNIX variants.  It causes the compiler to use
@@ -287,6 +287,7 @@ clean.unix:
 	$(RM) $(DISTRIB).tar.gz
 	$(RM) doc/elvtags.man
 	$(RM) elvis.rpm
+	$(RM) ctags
 
 clean.msdos:
 	$(RM) *$(OBJ)

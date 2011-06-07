@@ -657,7 +657,13 @@ static void buildargs(argc, argv)
 	 */
 	for (argnext = i = 0; i < argc; i++)
 	{
-		(void)exaddfilearg(&arglist, &argnext, argv[i], OSFILENAMERULES);
+		// I have replaced OSFILENAMERULES (the last arg) with 0. Note
+		// that at this stage we receive a fully expanded and
+		// preprocessed by OS file name, which means that an(other)
+		// attempt at its expansion may be harmful (as it turns out to
+		// be). In particular, we shouldn't be interpreting blanks as
+		// terminators.
+		(void)exaddfilearg(&arglist, &argnext, argv[i], 0);
 	}
 
 	/* if nothing read was added, then still allocate something */

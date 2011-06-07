@@ -858,6 +858,7 @@ then
 else
 	why "Assuming lpout=\"!lpr\" because /usr/bin/lp doesn't exist"
 fi
+	TLIBS="-lcurses"
 
 # Add non-X11 libraries to args via the --libs=... flag
 if [ "$TLIBS" ]

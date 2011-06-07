@@ -6,3 +6,21 @@ PG110607A:
 	The initial archive, to the best of my memory, is the original version
 	2.2 + a simple modification in ex.c (look for PGPGPG) disabling the
 	security check inhibiting split.
+
+PG110607B:
+
+	Changed FT_FILE (an enum item) in guix11 to FT_ZFILE (it collided with
+	some fonts-related includes).
+
+	Eliminated superfluous (and erroneous) attempts to internally expand
+	file names appearing as call arguments.
+
+	SA_INTERRUPT is not defined under Cygwin, which was causing compilation
+	errors.
+
+	Fixed configure to use curses (instead of termcap) with Cygwin.
+
+	Fixed Makefile.in to remove ctags on clean.
+
+	My version of elvis.x11 moved to data/ and made official. A couple of
+	other (suggested) files added there as well.

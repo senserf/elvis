@@ -5,7 +5,7 @@ typedef enum {
 	FT_ONEOF,	/* one of a preset list; includes boolean */
 	FT_NUMBER,	/* numeric field */
 	FT_STRING,	/* string field */
-	FT_FILE,	/* string field where <Tab> does filename completion */
+	FT_ZFILE,	/* string field where <Tab> does filename completion */
 	FT_LOCKED	/* non-editable field */
 } X_FIELDTYPE;
 typedef struct

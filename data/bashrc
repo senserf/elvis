@@ -1,0 +1,20 @@
+#
+# Suggestions for something to be put into .bashrc
+#
+#		PG
+#
+function vi ()
+{
+	if elvis -G x11 -font 9x15 -client "$*" >& /dev/null
+	then echo "editing $*"
+	else elvis -G termcap "$*"
+	fi
+}
+
+function vis ()
+{
+	if elvis -G x11 -font 9x15 "$*" >& /dev/null
+	then echo "editing $*"
+	else elvis -G termcap "$*"
+	fi
+}

@@ -287,6 +287,7 @@ clean.unix:
 	$(RM) $(DISTRIB).tar.gz
 	$(RM) doc/elvtags.man
 	$(RM) elvis.rpm
+	$(RM) ctags
 
 clean.msdos:
 	$(RM) *$(OBJ)

@@ -1,3 +1,8 @@
+#
+# This is my personal version of .elvisrc (to be put into $HOME)
+#
+#	PG
+#
 color x11.normal green on black
 color x11.bottom like normal
 color x11.selection on tan
