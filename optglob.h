@@ -124,7 +124,11 @@ extern OPTVAL lpval[];
 #define o_more    		optglob[110].value.boolean
 #define o_hardtabs		optglob[111].value.number
 #define o_redraw		optglob[112].value.boolean
-#define QTY_GLOBAL_OPTS			113
+
+// PG
+#define	o_trackmodified		optglob[113].value.boolean
+
+#define QTY_GLOBAL_OPTS			114
 
 #ifdef FEATURE_LPR
 # define o_lptype		lpval[0].value.string

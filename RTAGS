@@ -24,3 +24,14 @@ PG110607B:
 
 	My version of elvis.x11 moved to data/ and made official. A couple of
 	other (suggested) files added there as well.
+
+PG110608A:
+
+	Added option -m which produces on standard output the trace of file
+	status in the following format:
+
+		BST: d [filename]
+
+	where d is 0 or 1 (for clean and modified, respectively) and filename.
+	This is intended for scenarios where elvis is called from a program
+	which wants to know the file status.

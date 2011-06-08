@@ -423,6 +423,7 @@ void optglobinit()
 	}
 	optinsert("user", QTY(userdesc), userdesc, optuser);
 #endif
+	o_trackmodified = ElvFalse;
 }
 
 #ifdef FEATURE_LISTCHARS

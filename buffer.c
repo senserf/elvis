@@ -101,6 +101,18 @@ static OPTDESC bdesc[] =
 	{"bb", "bb",		optsstring,	optisstring	}
 };
 
+static tm_outstatus (BUFFER buf) {
+//
+// Output the buffer status to stdout
+//
+	if (o_trackmodified && !o_internal (buf)) {
+		fprintf (stdout, "BST: %1d [%s]\n",
+			o_modified (buf) && o_edited (buf) && !o_readonly (buf),
+			o_filename (buf) ? tochar8 (o_filename (buf)) : "");
+		fflush (stdout);
+	}
+}
+
 #ifdef DEBUG_ALLOC
 /* This are used for maintaining a linked list of all undo versions. */
 struct undo_s *undohead, *undotail;
@@ -813,6 +825,7 @@ BUFFER bufload(bufname, filename, reload)
 #ifdef FEATURE_AUTOMD
 			bufnoedit = ElvFalse;
 #endif
+			tm_outstatus (buf);
 			return buf;
 		}
 
@@ -890,6 +903,7 @@ BUFFER bufload(bufname, filename, reload)
 # ifdef FEATURE_AUTOCMD
 				bufnoedit = ElvFalse;
 # endif
+				tm_outstatus (buf);
 				return buf;
 			}
 		}
@@ -914,6 +928,7 @@ BUFFER bufload(bufname, filename, reload)
 #ifdef FEATURE_AUTOCMD
 		bufnoedit = ElvFalse;
 #endif
+		tm_outstatus (buf);
 		return buf;
 	}
 
@@ -1049,7 +1064,7 @@ BUFFER bufload(bufname, filename, reload)
 	/* done loading.  Any later changes may generate Edit events */
 	bufnoedit = ElvFalse;
 #endif
-
+	tm_outstatus (buf);
 	return buf;
 }
 
@@ -1670,6 +1685,8 @@ ELVBOOL bufwrite(from, to, wfile, force)
 		}
 	}
 
+	tm_outstatus (buf);
+
 	/* success! */
 	return ElvTrue;
 }
@@ -1925,6 +1942,7 @@ static void didmodify(buf)
 	/* do OptSet and OptChanged events on the "modified" option */
 	optautocmd("modified", NULL, &buf->modified);
 #endif
+	tm_outstatus (buf);
 }
 
 /* Recall a previous "undo" version of a given buffer.  The "back" argument
