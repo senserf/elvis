@@ -73,6 +73,8 @@ static char	*initialtag;
 static ELVBOOL	initialall;
 GUI	*chosengui;
 
+FILE	*vtderr;	/* We do not use stderr with -m */
+
 #ifdef FEATURE_STDIN
 FILE	*origstdin;	/* where to read "-" from */
 ELVBOOL	stdin_not_kbd;	/* if ElvTrue, then keyboard input should be adjusted */
@@ -309,6 +311,7 @@ static int parseflags(argc, argv)
 
 				  case 'm':
 					o_trackmodified = ElvTrue;
+					vtderr = stdout;
 					del = 1;
 					break;
 
@@ -848,6 +851,12 @@ static void init(argc, argv)
 	/* Store the filename arguments in a list */
 	buildargs(argc, argv);
 
+	if (o_trackmodified) {
+		// Send your PID to the caller
+		fprintf (stdout, "PID: %1d\n", getpid ());
+		fflush (stdout);
+	}
+
 	/* start the first file (i.e., make sure we have at least 1 window) */
 	startfirst();
 
@@ -919,6 +928,7 @@ int main(argc, argv)
 	int	argc;	/* number of command-line arguments */
 	char	**argv;	/* values of the command-line arguments */
 {
+	vtderr = stdout;
 	init(argc, argv);
 	(*gui->loop)();
 	term();

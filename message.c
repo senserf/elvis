@@ -20,6 +20,8 @@ static CHAR	verbose[200];
 static FILE	*fperr, *fpinfo;
 static ELVBOOL	msghiding;
 
+extern FILE *vtderr;
+
 
 /* redirect messages to a log file.  If "filename" is NULL then revert to
  * the normal reporting (stdout and stderr)
@@ -28,7 +30,7 @@ void msglog(filename)
 	char	*filename;
 {
 	/* if previously redirected, then stop redirection now */
-	if (fperr != NULL && fperr != stderr)
+	if (fperr != NULL && fperr != vtderr)
 		fclose(fperr);
 
 	/* open the log file, if any */
@@ -278,10 +280,10 @@ void msg(imp, terse, va_alist)
 	/* if fperr and fpinfo are NULL, then use stderr and stdout */
 	if (!fperr)
 	{
-		fperr = stderr;
+		fperr = vtderr;
 #ifdef FEATURE_STDIN
 		if (stdin_not_kbd)
-			fpinfo = stderr;
+			fpinfo = vtderr;
 		else
 #endif
 		fpinfo = stdout;

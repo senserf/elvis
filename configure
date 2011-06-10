@@ -1009,7 +1009,7 @@ cat >config.h <<eof-config
 #define	FEATURE_MKEXRC	/* the :mkexrc command */
 #define	FEATURE_NORMAL	/* vim-style :normal command */
 #define	FEATURE_PROTO	/* using aliases to add new protocols */
-#undef	FEATURE_RAM	/* store edit buffer in RAM if "-f ram" */
+#define	FEATURE_RAM	/* store edit buffer in RAM if "-f ram" */
 #define	FEATURE_RCSID	/* include RCS Id strings for all source files */
 #define FEATURE_REGION	/* the :region and :unregion commands */
 #define	FEATURE_SHOWTAG	/* the showtag option */

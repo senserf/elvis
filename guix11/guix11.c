@@ -45,6 +45,10 @@ char id_guix11[] = "$Id: guix11.c,v 2.82 2003/10/17 17:41:23 steve Exp $";
 #define DEFAULT_SCROLLBAR	resources[17].boolean
 #define DEFAULT_SCROLLWHEELSPEED resources[18].number
 #define DEFAULT_XENCODING	resources[19].string
+
+extern FILE *vtderr;
+
+
 static struct
 {
 	char	*class;
@@ -313,7 +317,7 @@ static void loadresources()
 	XrmValue value;
 
 	if (o_verbose >= 2)
-		fprintf(stderr, "Loading resources...\n");
+		fprintf(vtderr, "Loading resources...\n");
 
 	/* fetch the resource database */
 	XrmInitialize();
@@ -383,7 +387,7 @@ static void loadresources()
 	}
 #endif
 	if (o_verbose >= 2)
-		fprintf(stderr, "guix11.c:database=0x%lx\n", (long)database);
+		fprintf(vtderr, "guix11.c:database=0x%lx\n", (long)database);
 
 	/* for each resource that we care about... */
 	for (i = 0; i < QTY(resources); i++)
@@ -395,12 +399,12 @@ static void loadresources()
 			if (!strcmp(type, "String"))
 			{
 				if (o_verbose >= 2)
-					fprintf(stderr, "\t%s:\t%s\n", resources[i].name, value.addr);
+					fprintf(vtderr, "\t%s:\t%s\n", resources[i].name, value.addr);
 				resources[i].string = strdup(value.addr);
 			}
 			else if (o_verbose >= 2)
 			{
-				fprintf(stderr, "\tXrmGetResource(database, \"%s\", \"%s\", ...) return a %s -- ignored\n", resources[i].name, resources[i].class, type);
+				fprintf(vtderr, "\tXrmGetResource(database, \"%s\", \"%s\", ...) return a %s -- ignored\n", resources[i].name, resources[i].class, type);
 			}
 		}
 
@@ -883,7 +887,7 @@ static ELVBOOL clientaction(argc, argv)
 				break;
 
 			  default:
-				fprintf(stderr, "%s: %s not supported with -client\n", argv[0], argv[i]);
+				fprintf(vtderr, "%s: %s not supported with -client\n", argv[0], argv[i]);
 				return -1;
 			}
 		}

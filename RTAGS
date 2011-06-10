@@ -35,3 +35,17 @@ PG110608A:
 	where d is 0 or 1 (for clean and modified, respectively) and filename.
 	This is intended for scenarios where elvis is called from a program
 	which wants to know the file status.
+
+PG110610A:
+
+	Configured in the FEATURE_RAM option allowing you to use RAM buffers
+	with -f ram. This is very useful when working with PicOS SDA as it
+	allows the script to just kill the editor without having to worry about
+	the leftover buffer file.
+
+	I have tried to make sure that when operating with -m (see above)
+	Elvis never writes anything to stderr (using stdout instead), as that
+	would be interrpreted as an error by the Tcl pipe.
+
+	With -m the editor also reports its process ID, which allows the Tcl
+	script monitoring it to kill the process.

@@ -30,6 +30,8 @@ static void helpinit(_BLKNO_ bufinfo, void (*bufproc)(_BLKNO_ bufinfo, long ncha
 static void clobbercache P_((_BLKNO_ dst));
 #endif
 
+extern FILE *vtderr;
+
 /******************************************************************************/
 /* Some internal functions...						      */
 
@@ -378,7 +380,7 @@ static void helpinit(bufinfo, bufproc)
 	/* if it is damaged, skip it */
 	if (checksum(binfo) != binfo->bufinfo.checksum)
 	{
-		fprintf(stderr, "found a bad version of \"%s\"\n", binfo->bufinfo.name);
+		fprintf(vtderr, "found a bad version of \"%s\"\n", binfo->bufinfo.name);
 		sesunlock(bufinfo, ElvFalse);
 		return;
 	}

@@ -18,6 +18,8 @@
 
 #include <libgnorba/gnorba.h>
 
+extern FILE *vtderr;
+
 static ELVBOOL traceBufferedWrites=ElvFalse;
 
 /* Our main application top level window (which we aren't going to use) */
@@ -219,16 +221,16 @@ static void dndDrop(GtkWidget* w, GdkDragContext* context,
 static void writeBuffered(struct guignome_instance* gw, char* towrite, int ntowrite) {
   if (traceBufferedWrites) {
     int i;
-    fprintf(stderr,"writeBuffered: ");
+    fprintf(vtderr,"writeBuffered: ");
     for(i=0;i<ntowrite;i++) {
       if (elvprint(towrite[i])) {
-        fprintf(stderr,"%c",towrite[i]);
+        fprintf(vtderr,"%c",towrite[i]);
       } else {
-        fprintf(stderr,"<%d>",towrite[i]);
+        fprintf(vtderr,"<%d>",towrite[i]);
       };
     };
 
-    fprintf(stderr,":endwriteBuffered\n");
+    fprintf(vtderr,":endwriteBuffered\n");
   }
   /* If there isn't enough space for the text write out the old buffer contents */
   if ((gw->writeptr+ntowrite)>=TEMPBUFFERSIZE) {
