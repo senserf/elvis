@@ -16,7 +16,9 @@ static X11WIN	*keyxw;
 static long	rpttime;
 static XEvent	rptevent;
 
-
+static char 	*stdin_buf = NULL;
+static int	stdin_buf_size = 0,
+		stdin_buf_fill = 0;
 
 /* Arrange for following x_getevent() calls to return a given event if no
  * other events are received before the given timeout value.  To stop the
@@ -39,6 +41,103 @@ void x_ev_repeat(event, timeout)
 	}
 }
 
+static void tm_command () {
+
+	X11WIN	*xw;
+	WINDOW	win;
+	BUFFER	buf;
+
+	for (xw = x_winlist; xw; xw = xw->next) {
+		win = winofgw (xw);
+		buf = markbuffer (win->cursor);
+		if (buf == NULL || strcmp (o_filename (buf), first_read_file))
+			// Not our buffer
+			continue;
+
+		if (xw->ta.cursor != CURSOR_COMMAND)
+			// We are in the middle of an insertion or something
+			continue;
+
+		// More conditions for the cases when we shouldn't be issuing
+		// the command?
+		break;
+	}
+
+	if (xw != NULL) {
+		eventex ((GUIWIN*)xw, stdin_buf, ElvFalse);
+		xw->willraise = ElvTrue;
+		(void)(*guix11.focusgw)((GUIWIN *)xw);
+		XFlush(x_display);
+	}
+}
+
+static void tm_stdin_add (char c) {
+//
+// Add new character to the stdin buffer
+//
+	while (stdin_buf_fill >= stdin_buf_size) {
+		stdin_buf_size += 64;
+		stdin_buf = (char*) realloc (stdin_buf, stdin_buf_size);
+	}
+
+	stdin_buf [stdin_buf_fill++] = c;
+}
+
+static void tm_stdin_collect () {
+//
+// Collect characters from stdin until EOL; then interpret the line as an
+// ex statement
+//
+	char c;
+
+	if (read (x_stdin, &c, 1) != 1)
+		return;
+
+	if (c == '\n') {
+		tm_stdin_add ('\0');
+		tm_command ();
+		stdin_buf_fill = 0;
+		return;
+	}
+
+	tm_stdin_add (c);
+}
+
+static int tm_select (struct timeval *tout) {
+
+	fd_set rfds, wfds, efds;
+	int fd, md;
+
+	md = fd = ConnectionNumber (x_display);
+
+	if (o_trackmodified && x_stdin > fd)
+		md = x_stdin;
+
+	md++;
+
+	while (1) {
+
+		FD_ZERO(&rfds);
+		FD_ZERO(&wfds);
+		FD_ZERO(&efds);
+
+		FD_SET(fd, &rfds);
+
+		if (o_trackmodified)
+			FD_SET (x_stdin, &rfds);
+
+		if (select (md, &rfds, &wfds, &efds, tout) == 0)
+			// Always return immediately after timeout
+			return 0;
+
+		if (o_trackmodified && FD_ISSET (x_stdin, &rfds))
+			// Try to collect an input line
+			tm_stdin_collect ();
+
+		if (FD_ISSET (fd, &rfds))
+			return 1;
+	}
+}
 
 /* Read the next event.  This is complicated by the need to autorepeat some
  * scrollbar events, and the need to make the cursor blink.
@@ -47,7 +146,6 @@ XEvent *x_ev_wait()
 {
 	static XEvent	event;
 	XEvent		notify;
-	fd_set		rfds, wfds, efds;
 	struct timeval	timeout;
 	int		i;
 
@@ -58,15 +156,9 @@ XEvent *x_ev_wait()
 	if (keytime > 0 && XPending(x_display) == 0)
 	{
 		/* wait for timeout to elapse, or for an event to arrive */
-		FD_ZERO(&rfds);
-		FD_ZERO(&wfds);
-		FD_ZERO(&efds);
-		FD_SET(ConnectionNumber(x_display), &rfds);
 		timeout.tv_sec = keytime / 10;
 		timeout.tv_usec = (keytime % 10) * 100000;
-		i = select(ConnectionNumber(x_display) + 1,
-				&rfds, &wfds, &efds, &timeout);
-
+		i = tm_select (&timeout);
 		/* if timeout, then simulate a special KeyPress event. */
 		if (i == 0)
 		{
@@ -89,14 +181,9 @@ XEvent *x_ev_wait()
 		XFlush(x_display);
 		do
 		{
-			FD_ZERO(&rfds);
-			FD_ZERO(&wfds);
-			FD_ZERO(&efds);
-			FD_SET(ConnectionNumber(x_display), &rfds);
 			timeout.tv_sec = rpttime / 10;
 			timeout.tv_usec = (rpttime % 10) * 100000 + 33333;
-			i = select(ConnectionNumber(x_display) + 1,
-					&rfds, &wfds, &efds, &timeout);
+			i = tm_select(&timeout);
 			if (i > 0)
 			{
 				do
@@ -117,14 +204,9 @@ XEvent *x_ev_wait()
 		{
 			do
 			{
-				FD_ZERO(&rfds);
-				FD_ZERO(&wfds);
-				FD_ZERO(&efds);
-				FD_SET(ConnectionNumber(x_display), &rfds);
 				timeout.tv_sec = o_blinktime / 10;
 				timeout.tv_usec = (o_blinktime % 10) * 100000;
-				i = select(ConnectionNumber(x_display) + 1,
-						&rfds, &wfds, &efds, &timeout);
+				i = tm_select (&timeout);
 				if (i == 0)
 				{
 					if (x_hasfocus->ta.cursor == CURSOR_NONE)
@@ -134,13 +216,17 @@ XEvent *x_ev_wait()
 					XFlush(x_display);
 				}
 			} while (i == 0);
-
 			/* make cursor visible while processing event */
 			if (x_hasfocus->ta.cursor == CURSOR_NONE)
 				x_ta_drawcursor(x_hasfocus);
 		}
 
 		/* read the next event */
+		if (XPending (x_display) == 0)
+			// Make sure to monitor the stdin pipe while waiting
+			// for events
+			tm_select (NULL);
+
 		XNextEvent(x_display, &event);
 
 		/* compress MotionNotify events */

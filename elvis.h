@@ -136,6 +136,9 @@ extern FILE *origstdin;
 extern ELVBOOL stdin_not_kbd;
 #endif
 
+//PGTEST
+extern int x_stdin;
+
 /* Header files for the modules */
 #include "safe.h"
 #include "options.h"

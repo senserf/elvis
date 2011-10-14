@@ -1340,8 +1340,12 @@ static int init(argc, argv)
 	 * forever because the keystrokes would have to come from the ASCII
 	 * terminal where elvis was invoked, NOT from elvis' own window.
 	 */
+
+	// Preserve for pipe communication (PG)
+	x_stdin = dup(fileno(stdin));
+
 #ifdef FEATURE_STDIN
-	origstdin = fdopen(dup(fileno(stdin)), "r");
+	origstdin = fdopen(x_stdin, "r");
 #endif
 #ifdef NEED_FREOPEN
 	if (close(0) == 0)
@@ -1385,6 +1389,10 @@ static void destroygw(gw, force)
 	ELVBOOL	force;	/* if ElvTrue, try harder */
 {
 	X11WIN	*xw, *prev;
+	Atom		type;
+	unsigned long	ul, dummy;
+	int		format;
+	unsigned char	*data;
 
 	/* find the doomed window, and the window before it in the list */
 	for (xw = x_winlist, prev = NULL; xw != (X11WIN *)gw; prev = xw, xw = xw->next)
@@ -1441,12 +1449,19 @@ static void destroygw(gw, force)
 			focusgw((GUIWIN *)prev);
 		}
 
+		XGetWindowProperty(x_display, root, x_elvis_server, 0L, 1L,
+			ElvFalse, XA_WINDOW, &type, &format, &ul, &dummy,
+				&data);
+
+		if (ul == 1 && data == (unsigned char*)&x_winlist->win)
 		/* Also make the other window be an elvis server window.  This
 		 * is only significant if the doomed window used to be the
 		 * server, but it is just as easy to change it every time.
 		 */
-		XChangeProperty(x_display, root, x_elvis_server, XA_WINDOW, 32,
-			PropModeReplace, (unsigned char *)&x_winlist->win, 1);
+			// PG: I have changed this
+			XChangeProperty(x_display, root, x_elvis_server,
+				XA_WINDOW, 32, PropModeReplace,
+					(unsigned char *)&x_winlist->win, 1);
 	}
 }
 
@@ -2028,8 +2043,9 @@ static ELVBOOL creategw(name, firstcmd)
 	XSetWMProtocols(x_display, xw->win, &x_wm_delete_window, 1);
 	
 	/* make it work as an elvis server window */
-	XChangeProperty(x_display, root, x_elvis_server, XA_WINDOW, 32,
-		PropModeReplace, (unsigned char *)&xw->win, 1);
+	if (!o_trackmodified)
+		XChangeProperty(x_display, root, x_elvis_server, XA_WINDOW, 32,
+			PropModeReplace, (unsigned char *)&xw->win, 1);
 
 #ifndef NO_XLOCALE
 	/* give it an input context */

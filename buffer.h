@@ -136,6 +136,9 @@ typedef struct buffer_s
 #define bufsetmarks(buffer, mark) ((buffer)->marks = (mark))
 #define buflist(start)		((start) ? (start)->next : elvis_buffers)
 
+// PG
+extern char *first_read_file;
+
 extern BUFFER bufdefault;
 extern BUFFER elvis_buffers;
 extern BUFFER bufdefopts;

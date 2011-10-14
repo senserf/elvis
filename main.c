@@ -80,6 +80,9 @@ FILE	*origstdin;	/* where to read "-" from */
 ELVBOOL	stdin_not_kbd;	/* if ElvTrue, then keyboard input should be adjusted */
 #endif
 
+//PGTEST
+int x_stdin = 0;
+
 /* Give a usage message, and then exit */
 static void usage(hint)
 	char	*hint;	/* an error message */
@@ -102,7 +105,7 @@ static void usage(hint)
 	msg(MSG_INFO, "       -G gui      Use the \"gui\" user interface \\(see below\\)");
 	msg(MSG_INFO, "       -c command  Execute \"command\" after loading first file");
 	msg(MSG_INFO, "       -s          Read a script from stdin and execute it");
-	msg(MSG_INFO, "       -m          Track the file modified status on standard output");
+	msg(MSG_INFO, "       -m          Track the file-modified status on standard output");
 	msg(MSG_INFO, "       -t tag      Perform a tag search");
 	msg(MSG_INFO, "       -o logfile  Send messages to logfile instead of stderr");
 	msg(MSG_INFO, "       -B blksize  Use blocks of size \"blksize\"");

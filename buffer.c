@@ -56,6 +56,10 @@ BUFFER bufdefopts;
 static ELVBOOL bufnoedit;
 #endif
 
+// Used to identify the buffers with the "proper" file being edited (-m only)
+// PG
+char 	*first_read_file = NULL;
+
 /* This array describes buffer options */
 static OPTDESC bdesc[] =
 {
@@ -725,8 +729,14 @@ ELVBOOL bufread(mark, rfile)
 	}
 
 	/* read the text */
-	if (newbuf)
+	if (newbuf) {
+		if (o_trackmodified && first_read_file == NULL) {
+			first_read_file = (char*) malloc (strlen (rfile) + 1);
+			strcpy (first_read_file, rfile);
+		}
 		msg(MSG_STATUS, "[s]reading $1", rfile);
+	}
+
 	while ((nread = ioread(chunk, QTY(chunk))) > 0)
 	{
 		if (guipoll(ElvFalse))

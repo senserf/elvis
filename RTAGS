@@ -45,7 +45,25 @@ PG110610A:
 
 	I have tried to make sure that when operating with -m (see above)
 	Elvis never writes anything to stderr (using stdout instead), as that
-	would be interrpreted as an error by the Tcl pipe.
+	would be interpreted as an error by the Tcl pipe.
 
 	With -m the editor also reports its process ID, which allows the Tcl
 	script monitoring it to kill the process.
+
+PG111014A:
+
+	The -m option extended to monitor the input end (stdin) of the pipe.
+	Whatever shows up there is interpreted as an ex command. The idea is
+	to allow the PicOS SDA (called PIT from now on) to reposition files
+	in response to ctags clicks (to do: ctags clicks with -m should be
+	sent to stdout) and, possibly, some other exotic events.
+
+	Note: for now, the ex command arriving this way is ignored if there's
+	no window in the session (there can be multiple windows) that is in the
+	straightforward "command" mode, e.g., as opposed to the "insert" mode
+	(where repositioning the window spontaneously would mess up things).
+
+	I have made sure (or so I think) that a session started with -m doesn't
+	set the server property for its windows, which means that no other
+	edit session will try to connect to it. In other words, a session
+	started with -m is truly stand-alone and independent.
