@@ -54,7 +54,7 @@ PG111014A:
 
 	The -m option extended to monitor the input end (stdin) of the pipe.
 	Whatever shows up there is interpreted as an ex command. The idea is
-	to allow the PicOS SDA (called PIT from now on) to reposition files
+	to allow the PicOS SDA (called PIP from now on) to reposition files
 	in response to ctags clicks (to do: ctags clicks with -m should be
 	sent to stdout) and, possibly, some other exotic events.
 
@@ -67,3 +67,11 @@ PG111014A:
 	set the server property for its windows, which means that no other
 	edit session will try to connect to it. In other words, a session
 	started with -m is truly stand-alone and independent.
+
+PG111018A:
+
+	I think I have improved a bit the way the window is raised after its
+	repositioning by an ex command from stdin (with -m). Now I am clearing
+	the override_redirect attribute of the frame window and raising the
+	frame window (as opposed to the window itself). It seems to work under
+	Linux (Ubuntu), but not under Cygwin.

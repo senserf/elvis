@@ -1572,7 +1572,6 @@ static ELVBOOL focusgw(gw)
 	return ElvTrue;
 }
 
-
 /* In a loop, receive events from the GUI and call elvis
  * functions which will act on the event.  When this function
  * returns, elvis will call the GUI's term() function and then exit.

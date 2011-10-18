@@ -41,6 +41,36 @@ void x_ev_repeat(event, timeout)
 	}
 }
 
+static void tm_raise (X11WIN *xw) {
+//
+// Raise the window
+//
+	Window w, root, parent, *children;
+	unsigned int nchildren;
+	XSetWindowAttributes xswa;
+
+	w = xw->win;
+
+	while (1) {
+		// Locate the frame parent
+		children = NULL;
+		if (!XQueryTree (x_display, w, &root, &parent,
+			&children, &nchildren))
+				return;
+		if (children != NULL)
+			XFree (children);
+		if ((w = parent) == 0 || w == root)
+			break;
+	}
+
+	if (w == 0)
+		return;
+
+	xswa.override_redirect = ElvTrue;
+	XChangeWindowAttributes (x_display, w, CWOverrideRedirect, &xswa);
+	XRaiseWindow (x_display, w);
+}
+
 static void tm_command () {
 
 	X11WIN	*xw;
@@ -64,6 +94,7 @@ static void tm_command () {
 	}
 
 	if (xw != NULL) {
+		tm_raise (xw);
 		eventex ((GUIWIN*)xw, stdin_buf, ElvFalse);
 		xw->willraise = ElvTrue;
 		(void)(*guix11.focusgw)((GUIWIN *)xw);
@@ -763,4 +794,5 @@ ELVBOOL x_ev_poll(reset)
 
 	return ElvFalse;
 }
+
 #endif
