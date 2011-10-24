@@ -75,3 +75,8 @@ PG111018A:
 	the override_redirect attribute of the frame window and raising the
 	frame window (as opposed to the window itself). It seems to work under
 	Linux (Ubuntu), but not under Cygwin.
+
+PG111018A:
+
+	Empty command over stdin just raises the window.
+	Added an option (--) to ctags to send the ctags file to standard output.

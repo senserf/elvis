@@ -101,6 +101,7 @@ int	make_refs;	/* -r  generate a "refs" file */
 int	append_files;	/* -a  append to "tags" [and "refs"] files */
 int	add_hints;	/* -h  include extra fields that give elvis hints */
 int	add_ln;		/* -l  include line number in hints */
+int	to_stdout;	/* --  send the output to stdout */
 
 /* The following are used for outputting to the "tags" and "refs" files */
 FILE	*tags;		/* used for writing to the "tags" file */
@@ -1389,6 +1390,7 @@ int main(argc, argv)
 			  case 'a':	append_files = TRUE;		break;
 			  case 'h':	add_hints = TRUE;		break;
 			  case 'l':	add_ln = TRUE;			break;
+			  case '-':	to_stdout = TRUE;		break;
 			  default:	usage();
 			}
 		}
@@ -1416,11 +1418,15 @@ int main(argc, argv)
 	/* open the "tags" and maybe "refs" files */
 	if (make_tags)
 	{
-		tags = fopen(TAGS, append_files ? "a" : "w");
-		if (!tags)
-		{
-			perror(TAGS);
-			exit(3);
+		if (to_stdout) {
+			tags = fdopen (1, append_files ? "a" : "w");
+		} else {
+			tags = fopen(TAGS, append_files ? "a" : "w");
+			if (!tags)
+			{
+				perror(TAGS);
+				exit(3);
+			}
 		}
 	}
 	if (make_refs)

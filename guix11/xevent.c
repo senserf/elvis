@@ -76,6 +76,7 @@ static void tm_command () {
 	X11WIN	*xw;
 	WINDOW	win;
 	BUFFER	buf;
+	char 	*c;
 
 	for (xw = x_winlist; xw; xw = xw->next) {
 		win = winofgw (xw);
@@ -95,7 +96,11 @@ static void tm_command () {
 
 	if (xw != NULL) {
 		tm_raise (xw);
-		eventex ((GUIWIN*)xw, stdin_buf, ElvFalse);
+		for (c = stdin_buf; *c != '\0'; c++)
+			if (!isspace (*c))
+				break;
+		if (*c != '\0')
+			eventex ((GUIWIN*)xw, stdin_buf, ElvFalse);
 		xw->willraise = ElvTrue;
 		(void)(*guix11.focusgw)((GUIWIN *)xw);
 		XFlush(x_display);
