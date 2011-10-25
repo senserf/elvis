@@ -80,3 +80,17 @@ PG111018A:
 
 	Empty command over stdin just raises the window.
 	Added an option (--) to ctags to send the ctags file to standard output.
+
+PG111025A:
+
+	Fixed a bug in ctags.c causing incorrect parsing of sequences of
+	function announcements separated by commas. Added fsm as a special
+	keyword to facilitate tagging PicOS FSMs.
+
+	With -m, clicking in a window causes the ctag name to be sent over the
+	stdout pipe (TAG: tagname). PIP receives such requests and transforms
+	them into positioning (ex) commands addressed to the respective
+	windows.
+
+	Made sure to ignore \r in lines received over the stding pipe - to
+	account for Tcl's miscompatibilities under Cygwin.

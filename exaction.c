@@ -1200,6 +1200,14 @@ RESULT	ex_tag(xinf)
 
 	assert(xinf->command == EX_TAG || xinf->command == EX_STAG);
 
+	if (o_trackmodified) {
+		// A crude and nasty shortcut: just send the tag, we will do the
+		// processing elsewhere
+		fprintf (stdout, "TAG: %s\n", xinf->rhs);
+		fflush (stdout);
+		return result;
+	}
+
 	/* save a copy of the previous tag, if there was one */
 	fromtag = o_previoustag ? CHARdup(o_previoustag) : NULL;
 

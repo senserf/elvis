@@ -129,6 +129,10 @@ static void tm_stdin_collect () {
 	if (read (x_stdin, &c, 1) != 1)
 		return;
 
+	if (c == '\r')
+		// Ignore
+		return;
+
 	if (c == '\n') {
 		tm_stdin_add ('\0');
 		tm_command ();

@@ -51,6 +51,8 @@ char id_ctags[] = "$Id: ctags.c,v 2.44 2003/10/17 17:41:23 steve Exp $";
 #define EXTERN	  12
 #define NAME	  13
 #define INLINE	  14
+// Added by PG for PicOS
+#define	FSM	  15
 
 extern void	file_open P_((char *));
 extern int	file_getc P_((void));
@@ -263,6 +265,9 @@ int file_copyline(seek, fp, buf)
 
 		/* if character is '\', or a terminal '$', then quote it */
 		if (build && (ch == '\\'
+			// This line added by PG; I don't understand why special
+			// characters in patterns were not escaped
+			|| ch == '*' || ch == '.' || ch == '[' || ch == ']'
 			   || ch == (backward ? '?' : '/')
 			   || (ch == '$' && next == '\n')))
 		{
@@ -582,7 +587,9 @@ int lex_gettoken()
 				 * preceded by a word, or before any '{'
 				 */
 				for (hasname = FALSE;
-				     ch!=EOF && ch!='{' && (ch!=';' || hasname);
+				     ch!=EOF &&
+				     ch!='{' &&
+				   ((ch!=';' && ch!=',') || hasname);
 				     ch = cpp_getc())
 				{
 					if (elvalpha(ch) || ch == '_')
@@ -867,6 +874,10 @@ int lex_gettoken()
 					token = INLINE;
 					lex_seek = -1L;
 				}
+				else if (!strcmp (name, "fsm")) {
+					token = FSM;
+					lex_seek = -1L;
+				}
 				else if (!strcmp(name, "public")
 				      || !strcmp(name, "P_")
 				      || !strcmp(name, "__P")
@@ -1140,6 +1151,7 @@ void ctags(name)
 	{
 		if (make_parse)
 		{
+			printf ("[%1d,%1d] ", gotname, prev);
 			switch (token)
 			{
 			  case  BODY:	   printf("{%s}\n", lex_body);	break;
@@ -1154,8 +1166,10 @@ void ctags(name)
 			  case	ENUM:	   printf("enum ");		break;
 			  case  KSTATIC:   printf("static ");		break;
 			  case  EXTERN:	   printf("extern ");		break;
-			  case  NAME:	   printf("\"%s\" ", lex_name);	break;
+			  case  NAME:	   printf("N\"%s\" ",
+							lex_name);	break;
 			  case  INLINE:	   printf("inline ");		break;
+			  case  FSM:	   printf("fsm ");		break;
 			}
 		}
 
@@ -1173,9 +1187,13 @@ void ctags(name)
 			/* If we don't have a scope already, then this is it */
 			if (!scope || scope == TYPEDEF)
 				scope = token;
+Skip:
 			gotname = FALSE;
 			continue;
 		}
+
+		if (token == FSM)
+			goto Skip;
 
 		/* inline ? */
 		if (incl_inline && token == INLINE)
@@ -1189,6 +1207,8 @@ void ctags(name)
 		if (token == NAME)
 		{
 			tagseek = file_seek;
+			if (prev == FSM)
+				goto GenTag;
 			gotname = TRUE;
 			continue;
 		}
@@ -1198,6 +1218,17 @@ void ctags(name)
 		{
 			strcpy(hint_class, lex_name);
 			gotname = FALSE;
+			continue;
+		}
+
+		/* NAME ARGS BODY or FSM NAME BODY => treat as a function */
+		if (gotname && prev == ARGS && token == BODY)
+		{
+			gotname = FALSE;
+GenTag:
+			/* generate a tag, maybe checking -s */
+			maketag(scope, lex_name, lex_lnum, tagseek,
+				use_numbers, "f", NULL);
 			continue;
 		}
 
@@ -1224,15 +1255,6 @@ void ctags(name)
 					scope==STRUCT ? "s" : "u",
 					NULL);
 			}
-		}
-
-		/* If NAME ARGS BODY, then NAME is a function */
-		if (gotname && prev == ARGS && token == BODY)
-		{
-			gotname = FALSE;
-			
-			/* generate a tag, maybe checking -s */
-			maketag(scope, lex_name, lex_lnum, tagseek, use_numbers, "f", NULL);
 		}
 
 		/* If NAME SEMICOLON or NAME COMMA, then NAME is var/typedef.
