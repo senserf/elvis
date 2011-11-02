@@ -56,9 +56,11 @@ BUFFER bufdefopts;
 static ELVBOOL bufnoedit;
 #endif
 
+#ifdef GUI_X11
 // Used to identify the buffers with the "proper" file being edited (-m only)
 // PG
 char 	*first_read_file = NULL;
+#endif
 
 /* This array describes buffer options */
 static OPTDESC bdesc[] =
@@ -105,6 +107,7 @@ static OPTDESC bdesc[] =
 	{"bb", "bb",		optsstring,	optisstring	}
 };
 
+#ifdef GUI_X11
 static tm_outstatus (BUFFER buf) {
 //
 // Output the buffer status to stdout
@@ -116,6 +119,9 @@ static tm_outstatus (BUFFER buf) {
 		fflush (stdout);
 	}
 }
+#else
+#define	tm_outstatus(a) do { } while (0)
+#endif
 
 #ifdef DEBUG_ALLOC
 /* This are used for maintaining a linked list of all undo versions. */
@@ -730,10 +736,12 @@ ELVBOOL bufread(mark, rfile)
 
 	/* read the text */
 	if (newbuf) {
+#ifdef GUI_X11
 		if (o_trackmodified && first_read_file == NULL) {
 			first_read_file = (char*) malloc (strlen (rfile) + 1);
 			strcpy (first_read_file, rfile);
 		}
+#endif
 		msg(MSG_STATUS, "[s]reading $1", rfile);
 	}
 

@@ -125,8 +125,10 @@ extern OPTVAL lpval[];
 #define o_hardtabs		optglob[111].value.number
 #define o_redraw		optglob[112].value.boolean
 
+#ifdef GUI_X11
 // PG
 #define	o_trackmodified		optglob[113].value.boolean
+#endif
 
 #define QTY_GLOBAL_OPTS			114
 

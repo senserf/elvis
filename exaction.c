@@ -1200,14 +1200,18 @@ RESULT	ex_tag(xinf)
 
 	assert(xinf->command == EX_TAG || xinf->command == EX_STAG);
 
-	if (o_trackmodified) {
+#ifdef GUI_X11
+	if (o_trackmodified &&
+		strcmp (o_filename (markbuffer(xinf->window->cursor)),
+	            first_read_file) == 0) {
 		// A crude and nasty shortcut: just send the tag, we will do the
-		// processing elsewhere
+		// processing elsewhere; note that we do this only for a buffer
+		// editing our original file
 		fprintf (stdout, "TAG: %s\n", xinf->rhs);
 		fflush (stdout);
 		return result;
 	}
-
+#endif
 	/* save a copy of the previous tag, if there was one */
 	fromtag = o_previoustag ? CHARdup(o_previoustag) : NULL;
 

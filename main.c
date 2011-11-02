@@ -311,12 +311,16 @@ static int parseflags(argc, argv)
 					}
 					j = -1; /* so we stop processing this arg */
 					break;
-
+#ifdef GUI_X11
+				// Only available with X11
 				  case 'm':
+					if (chosengui != &guix11)
+						usage ("-m requires -G X11");
 					o_trackmodified = ElvTrue;
 					vtderr = stdout;
 					del = 1;
 					break;
+#endif
 
 				  case 'b':
 					o_binary = ElvTrue;
@@ -854,12 +858,13 @@ static void init(argc, argv)
 	/* Store the filename arguments in a list */
 	buildargs(argc, argv);
 
+#ifdef GUI_X11
 	if (o_trackmodified) {
 		// Send your PID to the caller
 		fprintf (stdout, "PID: %1d\n", getpid ());
 		fflush (stdout);
 	}
-
+#endif
 	/* start the first file (i.e., make sure we have at least 1 window) */
 	startfirst();
 

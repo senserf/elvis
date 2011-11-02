@@ -94,3 +94,14 @@ PG111025A:
 
 	Made sure to ignore \r in lines received over the stding pipe - to
 	account for Tcl's miscompatibilities under Cygwin.
+
+PG111102A:
+
+	When a tag click occurs in a window that does not contain our buffer,
+	it is processed the standard way. For example, clicks within the HELP
+	document are processed sensibly without being interpreted as PIP's
+	requests for tags.
+
+	A few cleanups. For example, it is now checked whether -m occurs
+	together with -G X11, as it makes no sense otherwise.
+
