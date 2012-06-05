@@ -2314,6 +2314,9 @@ RESULT	ex_version(xinf)
 	EXINFO	*xinf;
 {
 	msg(MSG_INFO, "[s]elvis $1", VERSION);
+#ifdef COPY0
+	msg(MSG_INFO, "[s]$1", COPY0);
+#endif
 #ifdef COPY1
 	msg(MSG_INFO, "[s]$1", COPY1);
 #endif

@@ -105,3 +105,10 @@ PG111102A:
 	A few cleanups. For example, it is now checked whether -m occurs
 	together with -G X11, as it makes no sense otherwise.
 
+PG120605A:
+
+	GIT RTAG added to version number displayed with the :ver command. For
+	now, that RTAG must be entered by hand in version.h. We do not modify
+	elvis too often, so it is probably OK. Just remember to update it
+	every once in a while.
+

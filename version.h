@@ -6,8 +6,9 @@
  *	README.html, search for the actual version number
  */
 
-#define VERSION	"2.2.0"
-#define COPY1 "Copyright (c) 1995-2003 by Steve Kirkendall"
+#define VERSION	"2.2.0 (PG120605A)"
+#define COPY0 "Copyright (c) 1995-2003 by Steve Kirkendall"
+#define	COPY1 "Adapted to PicOS/PIP by Pawel Gburzynski, 2011-2012"
 #if 1
 # define COPY2 "Permission is granted to redistribute the source or binaries under the terms of"
 # define COPY3 "of the Perl `Clarified Artistic License', as described in the doc/license.html"
