@@ -93,7 +93,7 @@ PG111025A:
 	windows.
 
 	Made sure to ignore \r in lines received over the stding pipe - to
-	account for Tcl's miscompatibilities under Cygwin.
+	account for Tcl's incompatibilities under Cygwin.
 
 PG111102A:
 
