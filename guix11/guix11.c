@@ -65,7 +65,7 @@ static struct
     {"Elvis.Foreground",	     "elvis.foreground",	    "black"},
     {"Elvis.Background",	     "elvis.background",	    "gray90"},
     {"Elvis.DblClickTime",	     "elvis.dblclicktime",	    "3", 3},
-    {"Elvis.Control.Font",	     "elvis.control.font",	    "variable"},
+    {"Elvis.Control.Font",	     "elvis.control.font",	    "fixed"},
     {"Elvis.Cursor.Foreground",	     "elvis.cursor.foreground",	    "red"},
     {"Elvis.Cursor.Selected",	     "elvis.cursor.selected",	    "red"},
     {"Elvis.Cursor.BlinkTime",	     "elvis.cursor.blinktime",	    "3"},

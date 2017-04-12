@@ -112,3 +112,6 @@ PG120605A:
 	elvis too often, so it is probably OK. Just remember to update it
 	every once in a while.
 
+PG170413A:
+
+	Fixed file modes + changed the control font to Fixed
