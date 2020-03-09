@@ -38,8 +38,8 @@ PG110608A:
 
 PG110610A:
 
-	Configured in the FEATURE_RAM option allowing you to use RAM buffers
-	with -f ram. This is very useful when working with PicOS SDA as it
+	Configured in the FEATURE_RAM option which makes it possible to use RAM
+	buffers with -f ram. This is very useful when working with PIP as it
 	allows the script to just kill the editor without having to worry about
 	the leftover buffer file.
 
@@ -47,21 +47,21 @@ PG110610A:
 	Elvis never writes anything to stderr (using stdout instead), as that
 	would be interpreted as an error by the Tcl pipe.
 
-	With -m the editor also reports its process ID, which allows the Tcl
-	script monitoring it to kill the process.
+	With -m the editor also reports its process ID, which allows PIP to
+	to easily kill the process.
 
 PG111014A:
 
 	The -m option extended to monitor the input end (stdin) of the pipe.
 	Whatever shows up there is interpreted as an ex command. The idea is
-	to allow the PicOS SDA (called PIP from now on) to reposition files
-	in response to ctags clicks (to do: ctags clicks with -m should be
-	sent to stdout) and, possibly, some other exotic events.
+	to allow PIP to reposition files in response to ctags clicks (to do:
+	ctags clicks with -m should be sent to stdout) and, possibly, some
+	other exotic events.
 
 	Note: for now, the ex command arriving this way is ignored if there's
 	no window in the session (there can be multiple windows) that is in the
 	straightforward "command" mode, e.g., as opposed to the "insert" mode
-	(where repositioning the window spontaneously would mess up things).
+	(where repositioning the window spontaneously would mess things up).
 
 	I have made sure (or so I think) that a session started with -m doesn't
 	set the server property for its windows, which means that no other
@@ -114,4 +114,20 @@ PG120605A:
 
 PG170413A:
 
-	Fixed file modes + changed the control font to Fixed
+	Fixed file modes + changed the control font to Fixed.
+
+PG200309A:
+
+	Fixed a minor (but occasionally annoying) problem when showing CTags,
+	in new windows. The cursor was stuck at the beginning (instead of
+	moving to the target line) until some kind of event was triggered in
+	the window, e.g., a mouse click. Now the window is unmapped and
+	remapped which does the trick (forcing an update causing the cursor to
+	move as needed) and additionally raises the window with some extra
+	commotion, so it is brought to the user's attention.
+
+	Modified elvis.clr and elvis.ini in data/ to allow spaces in filenames
+	which is the right way to go when a Unix-like system (Cygwin or Linux
+	on a VM) coexists with Windows. Changed the default fonts and theme
+	to what I am used to, so no .elvisrc file is needed to set the
+	preferred defaults.

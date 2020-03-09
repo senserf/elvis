@@ -18,6 +18,7 @@
 
 #include <libgnorba/gnorba.h>
 
+// PG: this replaces stderr which was used originally
 extern FILE *vtderr;
 
 static ELVBOOL traceBufferedWrites=ElvFalse;

@@ -45,7 +45,7 @@ void ttyraw(erasekey)
 	/* arrange for signals to be caught */
 	newsa.sa_handler = catchsig;
 #ifndef	SA_INTERRUPT
-	// Undefined under Cygwin
+	// PG: undefined under Cygwin
 #define	SA_INTERRUPT	0
 #endif
 

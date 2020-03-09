@@ -43,7 +43,7 @@
 #define	FEATURE_G	/* most of the visual 'g' commands */
 #define	FEATURE_HLOBJECT /* the hlobject and hllayers options */
 #define	FEATURE_HLSEARCH  /* the hlsearch option */
-#define	FEATURE_IMAGE	/* background images in x11 */
+#undef	FEATURE_IMAGE	/* background images in x11 */
 #define	FEATURE_INCSEARCH /* the incsearch option */
 #define	FEATURE_LISTCHARS /* the "listchars" option */
 #define	FEATURE_LITRE	/* accelerate searches for literal strings */
@@ -65,7 +65,7 @@
 #define	FEATURE_TAGS	/* :tag command -- undef'ing will break ref & ctags */
 #define	FEATURE_TEXTOBJ	/* text objects */
 #define	FEATURE_V	/* the v/V/^V marking commands */
-#define	FEATURE_XFT	/* support antialiased fonts in "x11" */
+#undef	FEATURE_XFT	/* support antialiased fonts in "x11" */
 
 /* The FEATURE_CALC option, above, controls whether the calculator and all of
  * the features that depend on it should be included in elvis.  You almost
@@ -100,7 +100,7 @@
 #undef	NEED_ASSERT	/* defines a custom assert() macro */
 #undef	NEED_TGETENT	/* causes tinytcap.c to be used instead of library */
 #undef	NEED_WINSIZE	/* includes <ptem.h> -- required by SCO */
-#undef	NEED_SPEED_T	/* includes <termcap.h> -- common on POSIX systems */
+#define	NEED_SPEED_T	/* includes <termcap.h> -- common on POSIX systems */
 #undef	NEED_STRDUP	/* uses a custom version of strdup() */
 #undef	NEED_MEMMOVE	/* uses a custom version of memmove() */
 #undef	NEED_OSPEED	/* causes guitcap.c to supply an ospeed variable */

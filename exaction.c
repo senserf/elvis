@@ -1204,9 +1204,9 @@ RESULT	ex_tag(xinf)
 	if (o_trackmodified &&
 		strcmp (o_filename (markbuffer(xinf->window->cursor)),
 	            first_read_file) == 0) {
-		// A crude and nasty shortcut: just send the tag, we will do the
-		// processing elsewhere; note that we do this only for a buffer
-		// editing our original file
+		// PG: a crude and nasty shortcut: just send the tag, we will
+		// do the processing elsewhere; note that we do this only for a
+		// buffer editing our original file
 		fprintf (stdout, "TAG: %s\n", xinf->rhs);
 		fflush (stdout);
 		return result;

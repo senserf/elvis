@@ -424,6 +424,7 @@ void optglobinit()
 	optinsert("user", QTY(userdesc), userdesc, optuser);
 #endif
 #ifdef GUI_X11
+	// PG:
 	o_trackmodified = ElvFalse;
 #endif
 }

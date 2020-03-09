@@ -20,8 +20,8 @@ static CHAR	verbose[200];
 static FILE	*fperr, *fpinfo;
 static ELVBOOL	msghiding;
 
+// PG:
 extern FILE *vtderr;
-
 
 /* redirect messages to a log file.  If "filename" is NULL then revert to
  * the normal reporting (stdout and stderr)

@@ -1,1 +1,1 @@
-exec configure --with-x --ioctl=termios --libs='-lcurses' cygwin_nt-6.1
+exec configure --with-x --ioctl=termios --libs='-lcurses' cygwin

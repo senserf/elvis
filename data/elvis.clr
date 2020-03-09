@@ -1,11 +1,11 @@
 switch gui
 case windows
 case x11 {
-  color normal black on gray90
+  color normal green on black
   color argument like keyword green or dark green
   color bottom like normal
   color comment italic dark green or light green
-  color cursor blue on navyblue
+  color cursor red on yellow
   color fixed gray35 or gray80
   color function Red4 or pink
   color guide white

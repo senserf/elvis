@@ -80,7 +80,7 @@ FILE	*origstdin;	/* where to read "-" from */
 ELVBOOL	stdin_not_kbd;	/* if ElvTrue, then keyboard input should be adjusted */
 #endif
 
-//PGTEST
+// PG: for PIP input
 int x_stdin = 0;
 
 /* Give a usage message, and then exit */
@@ -312,7 +312,7 @@ static int parseflags(argc, argv)
 					j = -1; /* so we stop processing this arg */
 					break;
 #ifdef GUI_X11
-				// Only available with X11
+				  // PG: available with X11 only
 				  case 'm':
 					if (chosengui != &guix11)
 						usage ("-m requires -G X11");
@@ -673,8 +673,8 @@ static void buildargs(argc, argv)
 	 */
 	for (argnext = i = 0; i < argc; i++)
 	{
-		// I have replaced OSFILENAMERULES (the last arg) with 0. Note
-		// that at this stage we receive a fully expanded and
+		// PG: I have replaced OSFILENAMERULES (the last arg) with 0.
+		// Note that at this stage we receive a fully expanded and
 		// preprocessed by OS file name, which means that an(other)
 		// attempt at its expansion may be harmful (as it turns out to
 		// be). In particular, we shouldn't be interpreting blanks as
@@ -860,7 +860,7 @@ static void init(argc, argv)
 
 #ifdef GUI_X11
 	if (o_trackmodified) {
-		// Send your PID to the caller
+		// PG: send your PID to the caller (PIP)
 		fprintf (stdout, "PID: %1d\n", getpid ());
 		fflush (stdout);
 	}
@@ -936,6 +936,7 @@ int main(argc, argv)
 	int	argc;	/* number of command-line arguments */
 	char	**argv;	/* values of the command-line arguments */
 {
+	// PG: alternative stderr
 	vtderr = stdout;
 	init(argc, argv);
 	(*gui->loop)();

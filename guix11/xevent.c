@@ -16,6 +16,7 @@ static X11WIN	*keyxw;
 static long	rpttime;
 static XEvent	rptevent;
 
+// PG: to read PIP commands for stdin
 static char 	*stdin_buf = NULL;
 static int	stdin_buf_size = 0,
 		stdin_buf_fill = 0;
@@ -41,38 +42,10 @@ void x_ev_repeat(event, timeout)
 	}
 }
 
-static void tm_raise (X11WIN *xw) {
-//
-// Raise the window
-//
-	Window w, root, parent, *children;
-	unsigned int nchildren;
-	XSetWindowAttributes xswa;
-
-	w = xw->win;
-
-	while (1) {
-		// Locate the frame parent
-		children = NULL;
-		if (!XQueryTree (x_display, w, &root, &parent,
-			&children, &nchildren))
-				return;
-		if (children != NULL)
-			XFree (children);
-		if ((w = parent) == 0 || w == root)
-			break;
-	}
-
-	if (w == 0)
-		return;
-
-	xswa.override_redirect = ElvTrue;
-	XChangeWindowAttributes (x_display, w, CWOverrideRedirect, &xswa);
-	XRaiseWindow (x_display, w);
-}
-
 static void tm_command () {
-
+//
+// PG: execute a command from PIP
+//
 	X11WIN	*xw;
 	WINDOW	win;
 	BUFFER	buf;
@@ -81,13 +54,16 @@ static void tm_command () {
 	for (xw = x_winlist; xw; xw = xw->next) {
 		win = winofgw (xw);
 		buf = markbuffer (win->cursor);
-		if (buf == NULL || strcmp (o_filename (buf), first_read_file))
+		if (buf == NULL || strcmp (o_filename (buf), first_read_file)) {
 			// Not our buffer
 			continue;
+		}
 
-		if (xw->ta.cursor != CURSOR_COMMAND)
+		if (xw->ta.cursor != CURSOR_COMMAND &&
+						xw->ta.cursor != CURSOR_NONE) {
 			// We are in the middle of an insertion or something
 			continue;
+		}
 
 		// More conditions for the cases when we shouldn't be issuing
 		// the command?
@@ -95,21 +71,38 @@ static void tm_command () {
 	}
 
 	if (xw != NULL) {
-		tm_raise (xw);
+
 		for (c = stdin_buf; *c != '\0'; c++)
 			if (!isspace (*c))
 				break;
-		if (*c != '\0')
-			eventex ((GUIWIN*)xw, stdin_buf, ElvFalse);
+
+		// Make sure the window is raised
 		xw->willraise = ElvTrue;
 		(void)(*guix11.focusgw)((GUIWIN *)xw);
+
+		if (*c != '\0') {
+			// Do the command
+			eventex ((GUIWIN*)xw, stdin_buf, ElvFalse);
+		}
+
+		// Now go through this nonsense which is the sure way to
+		// actually raise the window through the window manager.
+		// While it causes some weirdish commotion on the screen, it is
+		// actually useful (for its price), because the fact that
+		// something has happened in the window is brought to the
+		// user's attention
+		XUnmapWindow (x_display, xw->win);
+		// On Linux it needs a flush to work reliably, probably the
+		// server optimizes out Unmap + Map (at least on occasion)
+		XFlush(x_display);
+		XMapWindow (x_display, xw->win);
 		XFlush(x_display);
 	}
 }
 
 static void tm_stdin_add (char c) {
 //
-// Add new character to the stdin buffer
+// PG: add a new character to the stdin buffer
 //
 	while (stdin_buf_fill >= stdin_buf_size) {
 		stdin_buf_size += 64;
@@ -121,7 +114,7 @@ static void tm_stdin_add (char c) {
 
 static void tm_stdin_collect () {
 //
-// Collect characters from stdin until EOL; then interpret the line as an
+// PG: collect characters from stdin until EOL; then interpret the line as an
 // ex statement
 //
 	char c;
@@ -144,7 +137,9 @@ static void tm_stdin_collect () {
 }
 
 static int tm_select (struct timeval *tout) {
-
+//
+// PG: interleave server input with PIP input
+//
 	fd_set rfds, wfds, efds;
 	int fd, md;
 

@@ -108,6 +108,7 @@ static OPTDESC bdesc[] =
 };
 
 #ifdef GUI_X11
+// PG
 static tm_outstatus (BUFFER buf) {
 //
 // Output the buffer status to stdout
@@ -119,6 +120,7 @@ static tm_outstatus (BUFFER buf) {
 		fflush (stdout);
 	}
 }
+
 #else
 #define	tm_outstatus(a) do { } while (0)
 #endif
@@ -737,6 +739,7 @@ ELVBOOL bufread(mark, rfile)
 	/* read the text */
 	if (newbuf) {
 #ifdef GUI_X11
+		// PG: save the name of the original file
 		if (o_trackmodified && first_read_file == NULL) {
 			first_read_file = (char*) malloc (strlen (rfile) + 1);
 			strcpy (first_read_file, rfile);
@@ -843,6 +846,7 @@ BUFFER bufload(bufname, filename, reload)
 #ifdef FEATURE_AUTOMD
 			bufnoedit = ElvFalse;
 #endif
+			// PG: buffer status for PIP
 			tm_outstatus (buf);
 			return buf;
 		}
@@ -921,6 +925,7 @@ BUFFER bufload(bufname, filename, reload)
 # ifdef FEATURE_AUTOCMD
 				bufnoedit = ElvFalse;
 # endif
+				// PG: buffer status for PIP
 				tm_outstatus (buf);
 				return buf;
 			}
@@ -946,6 +951,7 @@ BUFFER bufload(bufname, filename, reload)
 #ifdef FEATURE_AUTOCMD
 		bufnoedit = ElvFalse;
 #endif
+		// PG: buffer status for PIP
 		tm_outstatus (buf);
 		return buf;
 	}
@@ -1082,6 +1088,7 @@ BUFFER bufload(bufname, filename, reload)
 	/* done loading.  Any later changes may generate Edit events */
 	bufnoedit = ElvFalse;
 #endif
+	// PG: buffer status for PIP
 	tm_outstatus (buf);
 	return buf;
 }
@@ -1703,6 +1710,7 @@ ELVBOOL bufwrite(from, to, wfile, force)
 		}
 	}
 
+	// PG: buffer status for PIP
 	tm_outstatus (buf);
 
 	/* success! */
@@ -1960,6 +1968,7 @@ static void didmodify(buf)
 	/* do OptSet and OptChanged events on the "modified" option */
 	optautocmd("modified", NULL, &buf->modified);
 #endif
+	// PG: buffer status update for PIP
 	tm_outstatus (buf);
 }
 

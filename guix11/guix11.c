@@ -46,6 +46,7 @@ char id_guix11[] = "$Id: guix11.c,v 2.82 2003/10/17 17:41:23 steve Exp $";
 #define DEFAULT_SCROLLWHEELSPEED resources[18].number
 #define DEFAULT_XENCODING	resources[19].string
 
+// PG: replaces stderr
 extern FILE *vtderr;
 
 
@@ -1464,8 +1465,6 @@ static void destroygw(gw, force)
 					(unsigned char *)&x_winlist->win, 1);
 	}
 }
-
-
 
 /* This function changes the keyboard focus to a specific window */
 static ELVBOOL focusgw(gw)

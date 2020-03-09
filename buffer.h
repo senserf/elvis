@@ -137,7 +137,7 @@ typedef struct buffer_s
 #define buflist(start)		((start) ? (start)->next : elvis_buffers)
 
 #ifdef GUI_X11
-// PG
+// PG: original file name + PIP log function
 extern char *first_read_file;
 #endif
 
@@ -158,3 +158,4 @@ extern void bufoptions P_((BUFFER buffer));
 extern void buffree P_((BUFFER buffer));
 extern void buftitle P_((BUFFER buffer, CHAR *title));
 END_EXTERNC
+

@@ -103,7 +103,7 @@ int	make_refs;	/* -r  generate a "refs" file */
 int	append_files;	/* -a  append to "tags" [and "refs"] files */
 int	add_hints;	/* -h  include extra fields that give elvis hints */
 int	add_ln;		/* -l  include line number in hints */
-int	to_stdout;	/* --  send the output to stdout */
+int	to_stdout;	/* --  send the output to stdout (PG: for PIP) */
 
 /* The following are used for outputting to the "tags" and "refs" files */
 FILE	*tags;		/* used for writing to the "tags" file */
@@ -265,7 +265,7 @@ int file_copyline(seek, fp, buf)
 
 		/* if character is '\', or a terminal '$', then quote it */
 		if (build && (ch == '\\'
-			// This line added by PG; I don't understand why special
+			// This line added by PG: I don't understand why special
 			// characters in patterns were not escaped
 			|| ch == '*' || ch == '.' || ch == '[' || ch == ']'
 			   || ch == (backward ? '?' : '/')
@@ -875,6 +875,7 @@ int lex_gettoken()
 					lex_seek = -1L;
 				}
 				else if (!strcmp (name, "fsm")) {
+					// PG
 					token = FSM;
 					lex_seek = -1L;
 				}

@@ -1,0 +1,12 @@
+To compile for Cygwin:
+
+	./configure --with-x cygwin
+	make
+	make install
+
+For Linux:
+
+	./configure --with-x linux
+	...
+
+Need libx11-dev + libxt-dev + libncurses-dev
