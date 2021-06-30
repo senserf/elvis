@@ -131,3 +131,8 @@ PG200309A:
 	on a VM) coexists with Windows. Changed the default fonts and theme
 	to what I am used to, so no .elvisrc file is needed to set the
 	preferred defaults.
+
+PG210630A:
+
+	Set Save to w! in data/elvis.x11 to override Windows's complaints about
+	file timestamp changes for files stored under OneDrive.

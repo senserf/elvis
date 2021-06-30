@@ -58,7 +58,7 @@ static ELVBOOL bufnoedit;
 
 #ifdef GUI_X11
 // Used to identify the buffers with the "proper" file being edited (-m only)
-// PG
+// PGPGPG
 char 	*first_read_file = NULL;
 #endif
 
@@ -108,7 +108,7 @@ static OPTDESC bdesc[] =
 };
 
 #ifdef GUI_X11
-// PG
+// PGPGPG
 static tm_outstatus (BUFFER buf) {
 //
 // Output the buffer status to stdout
@@ -739,7 +739,7 @@ ELVBOOL bufread(mark, rfile)
 	/* read the text */
 	if (newbuf) {
 #ifdef GUI_X11
-		// PG: save the name of the original file
+		// PGPGPG: save the name of the original file
 		if (o_trackmodified && first_read_file == NULL) {
 			first_read_file = (char*) malloc (strlen (rfile) + 1);
 			strcpy (first_read_file, rfile);
@@ -846,7 +846,7 @@ BUFFER bufload(bufname, filename, reload)
 #ifdef FEATURE_AUTOMD
 			bufnoedit = ElvFalse;
 #endif
-			// PG: buffer status for PIP
+			// PGPGPG: buffer status for PIP
 			tm_outstatus (buf);
 			return buf;
 		}
@@ -925,7 +925,7 @@ BUFFER bufload(bufname, filename, reload)
 # ifdef FEATURE_AUTOCMD
 				bufnoedit = ElvFalse;
 # endif
-				// PG: buffer status for PIP
+				// PGPGPG: buffer status for PIP
 				tm_outstatus (buf);
 				return buf;
 			}
@@ -951,7 +951,7 @@ BUFFER bufload(bufname, filename, reload)
 #ifdef FEATURE_AUTOCMD
 		bufnoedit = ElvFalse;
 #endif
-		// PG: buffer status for PIP
+		// PGPGPG: buffer status for PIP
 		tm_outstatus (buf);
 		return buf;
 	}
@@ -1088,7 +1088,7 @@ BUFFER bufload(bufname, filename, reload)
 	/* done loading.  Any later changes may generate Edit events */
 	bufnoedit = ElvFalse;
 #endif
-	// PG: buffer status for PIP
+	// PGPGPG: buffer status for PIP
 	tm_outstatus (buf);
 	return buf;
 }
@@ -1439,6 +1439,12 @@ ELVBOOL bufwrite(from, to, wfile, force)
 	OPTVAL	bangval[1];
 #endif
 
+#if 0
+// Check if this can be achieved with modifying Save in elvis.x11
+// PGPGPG (temporary)
+force = ElvTrue;
+#endif
+
 	assert(from && to && wfile);
 	assert(markbuffer(from) == markbuffer(to));
 	assert(markoffset(from) >= 0);
@@ -1710,7 +1716,7 @@ ELVBOOL bufwrite(from, to, wfile, force)
 		}
 	}
 
-	// PG: buffer status for PIP
+	// PGPGPG: buffer status for PIP
 	tm_outstatus (buf);
 
 	/* success! */
@@ -1968,7 +1974,7 @@ static void didmodify(buf)
 	/* do OptSet and OptChanged events on the "modified" option */
 	optautocmd("modified", NULL, &buf->modified);
 #endif
-	// PG: buffer status update for PIP
+	// PGPGPG: buffer status update for PIP
 	tm_outstatus (buf);
 }
 

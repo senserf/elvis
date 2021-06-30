@@ -12,7 +12,7 @@ gui Edit"Open a file in this window
 gui Split;"File to load:" (file) f = filename
 gui Split:sp (f)
 gui Split"Open a file in a new window
-gui Save:w
+gui Save:w!
 gui Save?modified && edited && !readonly
 gui Save"Write this buffer out to its file
 gui Save as;"File to write:"(file)f=dirfile(filename);="The default is in the current directory!"
