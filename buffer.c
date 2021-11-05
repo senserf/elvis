@@ -1439,8 +1439,9 @@ ELVBOOL bufwrite(from, to, wfile, force)
 	OPTVAL	bangval[1];
 #endif
 
-#if 0
-// Check if this can be achieved with modifying Save in elvis.x11
+#if 1
+// Check if this can be achieved with modifying Save in elvis.x11 (yeah, but
+// ZZ still doesn't work)
 // PGPGPG (temporary)
 force = ElvTrue;
 #endif
